@@ -34,7 +34,6 @@ function LocationPicker({ onPickLocation }) {
 
 	useEffect(() => {
 		async function handleLocation() {
-			console.log("Picked Location: ", pickedLocation);
 			if (pickedLocation) {
 				const address = await getAddress(
 					pickedLocation.lat,
