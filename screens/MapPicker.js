@@ -1,8 +1,9 @@
 import MapView, { Marker } from "react-native-maps";
-import { StyleSheet, View } from "react-native";
-import { useState } from "react";
+import { StyleSheet, View, Alert } from "react-native";
+import { useState, useLayoutEffect, useCallback } from "react";
+import IconButton from "../components/UI/IconButton";
 
-function MapPicker() {
+function MapPicker({ navigation }) {
 	const [selectedLocation, setSelectedLocation] = useState();
 
 	const region = {
@@ -18,6 +19,31 @@ function MapPicker() {
 
 		setSelectedLocation({ lat, lng });
 	}
+
+	const savePickedLocationHandler = useCallback(() => {
+		if (!selectedLocation) {
+			Alert.alert("No location picked", "Please pick a location first.");
+			return;
+		}
+
+		navigation.navigate("AddPlace", {
+			pickedLat: selectedLocation.lat,
+			pickedLng: selectedLocation.lng,
+		});
+	}, [navigation, selectedLocation]);
+
+	useLayoutEffect(() => {
+		navigation.setOptions({
+			headerRight: ({ tintColor }) => (
+				<IconButton
+					icon="save"
+					size={24}
+					color={tintColor}
+					onPress={savePickedLocationHandler}
+				/>
+			),
+		});
+	}, [navigation, savePickedLocationHandler]);
 
 	return (
 		<MapView
