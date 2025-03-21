@@ -28,6 +28,8 @@ function ImagePicker() {
 
 			return false;
 		}
+
+		return true;
 	}
 
 	async function takeImageHandler() {
